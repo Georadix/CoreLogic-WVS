@@ -1,2 +1,2 @@
 # CoreLogic-WVS
-CoreLogic Weather Verification Services
+CoreLogic Weather Verification Services Wrapper
