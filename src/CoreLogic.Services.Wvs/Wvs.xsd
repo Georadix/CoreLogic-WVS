@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="LHMServiceRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="convectiveDate" type="xs:dateTime" minOccurs="0" />
+        <xs:element name="idRegion" type="xs:string" minOccurs="0" />
+        <xs:element name="returnType" type="xs:string" minOccurs="0" />
+        <xs:element name="Date" type="xs:dateTime" minOccurs="0" />
+        <xs:element name="Regions" type="xs:string" minOccurs="0" />
+        <xs:element ref="RequestToken" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="address" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="GeoPoint" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="GeoBounds" minOccurs="0" maxOccurs="1" />
+        <xs:element ref="DateRange" minOccurs="0" maxOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="function" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LHMResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="HailscopeVersion" type="xs:string" minOccurs="0" />
+        <xs:element ref="StatusCode" minOccurs="1" maxOccurs="1" />
+        <xs:element name="HailMaps" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="HailMap" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Regions" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="Region" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RequestToken">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="idUser" type="xs:string" minOccurs="0" />
+        <xs:element name="key" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="address">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="streetAddress" type="xs:string" minOccurs="0" />
+        <xs:element name="city" type="xs:string" minOccurs="0" />
+        <xs:element name="state" type="xs:string" minOccurs="0" />
+        <xs:element name="zipcode" type="xs:string" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GeoPoint">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="lat" type="xs:decimal" minOccurs="1" />
+        <xs:element name="lon" type="xs:decimal" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GeoBounds">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="WestLon" type="xs:decimal" minOccurs="1" />
+        <xs:element name="EastLon" type="xs:decimal" minOccurs="1" />
+        <xs:element name="SouthLat" type="xs:decimal" minOccurs="1" />
+        <xs:element name="NorthLat" type="xs:decimal" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DateRange">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="StartDate" type="xs:dateTime" minOccurs="1" />
+        <xs:element name="EndDate" type="xs:dateTime" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="StatusCode">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="requestTime" type="xs:dateTime" use="required" />
+          <xs:attribute name="apiVersion" type="xs:string" />
+          <xs:attribute name="deployment" type="xs:string" />
+          <xs:attribute name="message" type="xs:string" />
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="HailMap">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="category" type="xs:string" minOccurs="1" />
+        <xs:element name="lastUpdated" type="xs:dateTime" minOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="region" type="xs:string" />
+      <xs:attribute name="convectiveDate" type="xs:dateTime" use="required" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CenterCoordinate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="lat" type="xs:decimal" minOccurs="1" />
+        <xs:element name="lon" type="xs:decimal" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Polygon">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="outerBoundaryIs" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="outerBoundaryIs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="LinearRing" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LinearRing">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="coordinates" type="xs:string" minOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Region">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="GeoBounds" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="CenterCoordinate" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="Polygon" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
