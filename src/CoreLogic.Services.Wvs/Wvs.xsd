@@ -99,7 +99,10 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element name="category" type="xs:string" minOccurs="1" />
+        <xs:element name="displayName" type="xs:string" minOccurs="1" />
         <xs:element name="lastUpdated" type="xs:dateTime" minOccurs="1" />
+        <xs:element name="centerLat" type="xs:decimal" minOccurs="1" />
+        <xs:element name="centerLon" type="xs:decimal" minOccurs="1" />
       </xs:sequence>
       <xs:attribute name="region" type="xs:string" />
       <xs:attribute name="convectiveDate" type="xs:dateTime" use="required" />

@@ -11,8 +11,8 @@
 
         public WvsClientFixture()
         {
-            this.config.Setup(c => c.ApiKey).Returns("Your WVS API key.");
-            this.config.Setup(c => c.ClientId).Returns("Your WVS client ID.");
+            this.config.Setup(c => c.ApiKey).Returns("apiKey");
+            this.config.Setup(c => c.ClientId).Returns("clientId");
             this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/services/endpoint.php");
             this.config.Setup(c => c.Timeout).Returns(100);
         }
@@ -37,8 +37,11 @@
             var map = result.First();
 
             Assert.Equal("1", map.category);
-            Assert.Equal("2015-03-19 12:00:00", map.convectiveDate.ToString());
-            Assert.Equal("2016-03-25 21:08:23", map.lastUpdated.ToString());
+            Assert.Equal(34.362, (double)map.centerLat);
+            Assert.Equal(-98.976, (double)map.centerLon);
+            Assert.Equal("March 19th, 2015 - Wichita Falls, TX", map.displayName);
+            Assert.Equal("2015-03-19T12:00:00", map.convectiveDate.ToString("s"));
+            Assert.Equal("2016-03-25T21:08:23", map.lastUpdated.ToString("s"));
             Assert.Equal("FDR", map.region);
         }
 
