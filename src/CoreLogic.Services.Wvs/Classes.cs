@@ -235,8 +235,14 @@ namespace CoreLogic.Services.Wvs {
     public partial class HailMap {
         
         private string categoryField;
+
+        private string displayNameField;
         
         private System.DateTime lastUpdatedField;
+
+        private decimal centerLatField;
+
+        private decimal centerLonField;
         
         private string regionField;
         
@@ -252,6 +258,17 @@ namespace CoreLogic.Services.Wvs {
                 this.categoryField = value;
             }
         }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string displayName {
+            get {
+                return this.displayNameField;
+            }
+            set {
+                this.displayNameField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
@@ -261,6 +278,28 @@ namespace CoreLogic.Services.Wvs {
             }
             set {
                 this.lastUpdatedField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public decimal centerLat {
+            get {
+                return this.centerLatField;
+            }
+            set {
+                this.centerLatField = value;
+            }
+        }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public decimal centerLon {
+            get {
+                return this.centerLonField;
+            }
+            set {
+                this.centerLonField = value;
             }
         }
         
