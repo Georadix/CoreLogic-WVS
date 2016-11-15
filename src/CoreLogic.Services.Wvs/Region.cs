@@ -61,7 +61,7 @@
             regionMetadata.Add("DTX", new RegionInfo("Detroit", "MI"));
             regionMetadata.Add("DVN", new RegionInfo("Davenport", "IA"));
             regionMetadata.Add("DYX", new RegionInfo("Abilene", "TX"));
-            regionMetadata.Add("EAX", new RegionInfo("Kansas", "City MO"));
+            regionMetadata.Add("EAX", new RegionInfo("Kansas City", "MO"));
             regionMetadata.Add("EMX", new RegionInfo("Tucson", "AZ"));
             regionMetadata.Add("ENX", new RegionInfo("Albany", "NY"));
             regionMetadata.Add("EOX", new RegionInfo("Dothan", "AL"));
