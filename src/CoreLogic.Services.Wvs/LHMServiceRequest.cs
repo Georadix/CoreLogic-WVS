@@ -210,17 +210,19 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve a map.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="regionId">The region ID.</param>
         /// <param name="convectiveDate">The convective date.</param>
         /// <param name="returnType">The return type (i.e. GEOJSON, KMZ, PNG).</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetMap(string regionId, DateTime convectiveDate, string returnType = "GEOJSON")
+        public static LHMServiceRequest GetMap(
+            WeatherMapType mapType, string regionId, DateTime convectiveDate, string returnType = "GEOJSON")
         {
             var result = new LHMServiceRequest
             {
                 convectiveDate = convectiveDate,
                 convectiveDateSpecified = true,
-                function = "GetMap",
+                function = LHMServiceRequest.GetFunctionFromMapType(mapType),
                 idRegion = regionId,
                 returnType = returnType
             };
@@ -322,6 +324,22 @@
             }
 
             return result;
+        }
+
+        private static string GetFunctionFromMapType(WeatherMapType mapType)
+        {
+            switch (mapType)
+            {
+                case WeatherMapType.Hail:
+                    return "GetMap";
+
+                case WeatherMapType.Wind:
+                    return "GetWindMap";
+
+                default:
+                    throw new NotSupportedException(string.Format(
+                        "The specified map type {0} is not supported.", mapType.ToString()));
+            }
         }
 
         private static LHMServiceRequest GetRegions(
