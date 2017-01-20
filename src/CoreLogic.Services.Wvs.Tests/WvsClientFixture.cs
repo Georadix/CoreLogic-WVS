@@ -46,11 +46,12 @@
         }
 
         [Fact(Skip = "External web service call, run manually.")]
-        public void GetMapReturnsMap()
+        public void GetHailMapReturnsHailMap()
         {
             var sut = new WvsClient(this.config.Object);
 
-            var request = LHMServiceRequest.GetMap("FDR", DateTime.Parse("2015-03-25T12:00:00"), "KMZ");
+            var request = LHMServiceRequest.GetMap(
+                WeatherMapType.Hail, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "KMZ");
 
             var result = sut.GetMap(request);
 
@@ -88,6 +89,23 @@
             Assert.Equal(
                 "POLYGON ((-164.73 62.19, -159.02 62.19, -159.02 59.4, -164.73 59.4, -164.73 62.19))",
                 region.GetPolygonWkt());
+        }
+
+        [Fact(Skip = "External web service call, run manually.")]
+        public void GetWindMapReturnsWindMap()
+        {
+            var sut = new WvsClient(this.config.Object);
+
+            var request = LHMServiceRequest.GetMap(
+                WeatherMapType.Wind, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "GEOJSON");
+
+            var result = sut.GetMap(request);
+
+            // To save the contents to a file, uncomment the following lines:
+            // var bytes = new byte[result.Length];
+            // result.Read(bytes, 0, bytes.Length);
+            // File.WriteAllBytes(@"d:\data\wind-storm.json", bytes);
+            Assert.Equal(56066, result.Length);
         }
     }
 }
