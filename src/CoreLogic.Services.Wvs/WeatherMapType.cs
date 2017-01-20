@@ -1,7 +1,7 @@
 ﻿namespace CoreLogic.Services.Wvs
 {
     /// <summary>
-    /// Enumerates the weather map type offered by WVS.
+    /// Enumerates the weather map types offered by WVS.
     /// </summary>
     public enum WeatherMapType
     {
