@@ -28,7 +28,8 @@
                 StartDate = new DateTime(2015, 03, 18)
             };
 
-            var request = LHMServiceRequest.GetAvailableMaps(dateRange, new string[] { "FDR", "TLX", "VNX", "ICT" });
+            var request = LHMServiceRequest.GetAvailableMaps(
+                WeatherMapType.Hail, dateRange, new string[] { "FDR", "TLX", "VNX", "ICT" });
 
             var result = sut.GetResponse(request).HailMaps;
 
@@ -39,7 +40,37 @@
             Assert.Equal("1", map.category);
             Assert.Equal(34.362, (double)map.centerLat);
             Assert.Equal(-98.976, (double)map.centerLon);
-            Assert.Equal("March 19th, 2015 - Wichita Falls, TX", map.displayName);
+            Assert.Equal("March 19th, 2015 - Wichita Falls - TX", map.displayName);
+            Assert.Equal("2015-03-19T12:00:00", map.convectiveDate.ToString("s"));
+            Assert.Equal("2016-03-25T21:08:23", map.lastUpdated.ToString("s"));
+            Assert.Equal("FDR", map.region);
+        }
+
+        [Fact(Skip = "External web service call, run manually.")]
+        public void GetAvailableWindMapsReturnsWindMaps()
+        {
+            var sut = new WvsClient(this.config.Object);
+
+            var dateRange = new DateRange()
+            {
+                EndDate = new DateTime(2015, 03, 20),
+                StartDate = new DateTime(2015, 03, 18)
+            };
+
+            var request = LHMServiceRequest.GetAvailableMaps(
+                WeatherMapType.Wind, dateRange, new string[] { "FDR", "TLX", "VNX", "ICT" });
+
+            var result = sut.GetResponse(request).WindMaps;
+
+            Assert.Equal(1, result.Count());
+
+            var map = result.First();
+
+            Assert.Equal(130, map.maxSpeed.Value);
+            Assert.Equal("mph", map.maxSpeed.units);
+            Assert.Equal(34.362, (double)map.centerLat);
+            Assert.Equal(-98.976, (double)map.centerLon);
+            Assert.Equal("March 19th, 2015 - Wichita Falls - TX", map.displayName);
             Assert.Equal("2015-03-19T12:00:00", map.convectiveDate.ToString("s"));
             Assert.Equal("2016-03-25T21:08:23", map.lastUpdated.ToString("s"));
             Assert.Equal("FDR", map.region);
