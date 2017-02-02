@@ -29,6 +29,13 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="WindMaps" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element ref="WindMap" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
         <xs:element name="Regions" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:sequence>
@@ -103,6 +110,28 @@
         <xs:element name="lastUpdated" type="xs:dateTime" minOccurs="1" />
         <xs:element name="centerLat" type="xs:decimal" minOccurs="1" />
         <xs:element name="centerLon" type="xs:decimal" minOccurs="1" />
+      </xs:sequence>
+      <xs:attribute name="region" type="xs:string" />
+      <xs:attribute name="convectiveDate" type="xs:dateTime" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="Velocity">
+    <xs:simpleContent>
+      <xs:extension base="xs:int">
+        <xs:attribute name="units" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name="WindMap">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="displayName" type="xs:string" minOccurs="1" />
+        <xs:element name="lastUpdated" type="xs:dateTime" minOccurs="1" />
+        <xs:element name="centerLat" type="xs:decimal" minOccurs="1" />
+        <xs:element name="centerLon" type="xs:decimal" minOccurs="1" />
+        <xs:element name="maxSpeed" type="Velocity" minOccurs="1" />
       </xs:sequence>
       <xs:attribute name="region" type="xs:string" />
       <xs:attribute name="convectiveDate" type="xs:dateTime" use="required" />
