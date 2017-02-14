@@ -1,6 +1,7 @@
 ﻿namespace CoreLogic.Services.Wvs
 {
     using GeoAPI.Geometries;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -192,7 +193,9 @@
         /// <returns>A well-known text string.</returns>
         public string GetPolygonWkt()
         {
-            var coordinateStrings = this.Polygon.outerBoundaryIs.LinearRing.coordinates.Split('\n');
+            var coordinateStrings = this.Polygon.outerBoundaryIs.LinearRing.coordinates.Split(
+                new char[] { '\n' },
+                StringSplitOptions.RemoveEmptyEntries);
 
             var coordinates = coordinateStrings.Select(c =>
             {
