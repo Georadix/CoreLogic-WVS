@@ -83,7 +83,7 @@
             var sut = new WvsClient(this.config.Object);
 
             var request = LHMServiceRequest.GetMap(
-                WeatherMapType.Hail, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "KMZ");
+                WeatherMapType.Hail, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "GEOJSON");
 
             var result = sut.GetMap(request);
 

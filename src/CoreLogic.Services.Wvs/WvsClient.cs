@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
@@ -42,7 +43,7 @@
         {
             content.SetRequestToken(this.config.ClientId, this.config.ApiKey);
 
-            using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(this.config.Timeout) })
+            using (var client = this.CreateHttpClient())
             {
                 var request = client.PostAsync(this.config.EndpointUrl, content, this.xmlFormatter);
                 request.Wait();
@@ -82,7 +83,7 @@
         {
             content.SetRequestToken(this.config.ClientId, this.config.ApiKey);
 
-            using (var client = new HttpClient() { Timeout = TimeSpan.FromSeconds(this.config.Timeout) })
+            using (var client = this.CreateHttpClient())
             {
                 var request = client.PostAsync(this.config.EndpointUrl, content, this.xmlFormatter);
                 request.Wait();
@@ -122,6 +123,22 @@
                     throw ex;
                 }
             }
+        }
+
+        private HttpClient CreateHttpClient()
+        {
+            var handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+
+            var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(this.config.Timeout) };
+
+            client.DefaultRequestHeaders.AcceptEncoding.Clear();
+            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            return client;
         }
     }
 }
