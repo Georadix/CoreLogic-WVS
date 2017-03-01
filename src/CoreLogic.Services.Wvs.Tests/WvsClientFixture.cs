@@ -83,7 +83,7 @@
             var sut = new WvsClient(this.config.Object);
 
             var request = LHMServiceRequest.GetMap(
-                WeatherMapType.Hail, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "KMZ");
+                WeatherMapType.Hail, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "GEOJSON");
 
             var result = sut.GetMap(request);
 
@@ -91,7 +91,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\storm.kmz", bytes);
-            Assert.Equal(56066, result.Length);
+            Assert.Equal(338964, result.Length);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
@@ -137,7 +137,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\wind-storm.json", bytes);
-            Assert.Equal(56066, result.Length);
+            Assert.Equal(1602620, result.Length);
         }
     }
 }
