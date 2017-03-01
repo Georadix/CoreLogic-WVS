@@ -91,7 +91,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\storm.kmz", bytes);
-            Assert.Equal(56066, result.Length);
+            Assert.Equal(338964, result.Length);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
@@ -137,7 +137,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\wind-storm.json", bytes);
-            Assert.Equal(56066, result.Length);
+            Assert.Equal(1602620, result.Length);
         }
     }
 }
