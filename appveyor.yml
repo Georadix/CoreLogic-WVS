@@ -41,7 +41,6 @@ build:
   verbosity: minimal
 
 before_build:
-  - appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - nuget restore src\CoreLogic.Wvs.sln
 
 after_build:
