@@ -14,7 +14,7 @@ if (!(Test-Path "$root/CodeCoverage")) {
 	mkdir "$root/CodeCoverage"
 }
 
-$testDlls = Get-ChildItem -Path $src -Recurse -Include *.Tests.dll | Where-Object {$_.Directory -imatch "bin\\$configuration"} | % { """""$_""""" }
+$testDlls = Get-ChildItem -Path .\src -Filter "*.Tests" | % { """""$src\$_\bin\$configuration\$_.dll""""" }
 
 & $opencover `
  -target:$xunit "-targetargs:$testDlls -nologo -noshadow" `
