@@ -1,11 +1,5 @@
-$cwd = Get-Location
-
 $root = Split-Path -Parent $PSScriptRoot
 $src = $PSScriptRoot
-
-#if (Test-Path env:APPVEYOR_BUILD_FOLDER) {
-#    Set-Location $env:APPVEYOR_BUILD_FOLDER\src
-#}
 
 $opencover = (Resolve-Path "$src/packages/OpenCover.*/tools/OpenCover.Console.exe" -ErrorAction Stop).ToString()
 $xunit = (Resolve-Path "$src/packages/xunit.runner.console.*/tools/xunit.console.exe" -ErrorAction Stop).ToString()
@@ -20,8 +14,10 @@ if (!(Test-Path "$root/CodeCoverage")) {
 	mkdir "$root/CodeCoverage"
 }
 
+$testDlls = Get-ChildItem -Path $src -Recurse -Include *.Tests.dll | Where-Object {$_.Directory -imatch "bin\\$configuration"} | % { """""$_""""" }
+
 & $opencover `
- -target:$xunit "-targetargs:""$src\CoreLogic.Services.Wvs.Tests\bin\$configuration\CoreLogic.Services.Wvs.Tests.dll"" -nologo -noshadow" `
+ -target:$xunit "-targetargs:$testDlls -nologo -noshadow" `
  -filter:"+[*]* -[*.Tests]* -[xunit*]*" `
  -excludebyattribute:"System.Diagnostics.DebuggerHiddenAttribute;System.Diagnostics.DebuggerNonUserCodeAttribute;System.Runtime.CompilerServices.CompilerGeneratedAttribute;System.CodeDom.Compiler.GeneratedCodeAttribute;System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" `
  -coverbytest:* `
@@ -41,5 +37,3 @@ if ($LASTEXITCODE -ne 0) {
 if ($LASTEXITCODE -ne 0) {
     throw "Error generating code coverage reports."
 }
-
-#Set-Location $cwd
