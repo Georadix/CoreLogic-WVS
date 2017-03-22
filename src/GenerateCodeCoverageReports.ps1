@@ -13,12 +13,14 @@ if (Test-Path env:CONFIGURATION) {
     $configuration = $env:CONFIGURATION
 }
 
+cd ..
+
 if (!(Test-Path .\CodeCoverage)) {
 	mkdir CodeCoverage
 }
 
 & $opencover `
- -target:$xunit "-targetargs:"".\CoreLogic.Services.Wvs.Tests\bin\$configuration\CoreLogic.Services.Wvs.Tests.dll"" -nologo -noshadow" `
+ -target:$xunit "-targetargs:"".\src\CoreLogic.Services.Wvs.Tests\bin\$configuration\CoreLogic.Services.Wvs.Tests.dll"" -nologo -noshadow" `
  -filter:"+[*]* -[*.Tests]* -[xunit*]*" `
  -excludebyattribute:"System.Diagnostics.DebuggerHiddenAttribute;System.Diagnostics.DebuggerNonUserCodeAttribute;System.Runtime.CompilerServices.CompilerGeneratedAttribute;System.CodeDom.Compiler.GeneratedCodeAttribute;System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" `
  -coverbytest:* `

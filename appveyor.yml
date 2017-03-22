@@ -59,8 +59,7 @@ after_test:
 #---------------------------------#
 
 artifacts:
-  - path: src\CodeCoverage
-    name: CodeCoverage
+  - path: CodeCoverage
 
 #---------------------------------#
 #     deployment configuration    #
