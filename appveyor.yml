@@ -38,6 +38,7 @@ assembly_info:
 configuration: Release
 
 build:
+  project: src\CoreLogic.Wvs.sln
   verbosity: minimal
 
 before_build:
