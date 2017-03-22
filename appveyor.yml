@@ -50,6 +50,17 @@ after_build:
   - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - cd ..
 
+after_test:
+  - ps: .\src\GenerateCodeCoverageReports.ps1
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  - path: src\CodeCoverage
+    name: CodeCoverage
+
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
