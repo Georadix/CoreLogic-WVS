@@ -5,6 +5,5 @@ CoreLogic Weather Verification Services Wrapper
 
 Code Coverage Reports:
 - [Develop](https://ci.appveyor.com/api/projects/Georadix/corelogic-wvs/artifacts/CodeCoverage.zip?branch=develop)
-- [Latest Build](https://ci.appveyor.com/api/projects/Georadix/corelogic-wvs/artifacts/CodeCoverage.zip)
 
 Copyright &copy; 2017 [CoreLogic](http://corelogic.com).
