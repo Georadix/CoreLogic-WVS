@@ -11,8 +11,8 @@
 
         public WvsClientFixture()
         {
-            this.config.Setup(c => c.ApiKey).Returns("qSE7Ts-k67gNEJHwRM-V6yMcSTyJptFt6FMc22Cq");
-            this.config.Setup(c => c.ClientId).Returns("8857447859");
+            this.config.Setup(c => c.ApiKey).Returns("apiKey");
+            this.config.Setup(c => c.ClientId).Returns("clientId");
             this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/");
             this.config.Setup(c => c.Timeout).Returns(30);
         }
