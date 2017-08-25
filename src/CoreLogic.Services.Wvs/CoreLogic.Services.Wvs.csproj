@@ -89,6 +89,8 @@
     <Compile Include="WeatherMapType.cs" />
     <Compile Include="WvsClient.cs" />
     <Compile Include="WvsConfigurationSection.cs" />
+    <Compile Include="WvsErrorHandler.cs" />
+    <Compile Include="WvsException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

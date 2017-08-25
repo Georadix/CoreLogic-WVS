@@ -11,19 +11,19 @@
         /// <summary>
         /// Gets a map from the specified request.
         /// </summary>
-        /// <param name="content">The request content.</param>
+        /// <param name="request">The request.</param>
         /// <returns>A <see cref="Stream"/> instance.</returns>
-        /// <exception cref="Exception">The request returned an error.</exception>
+        /// <exception cref="WvsException">The request returned an error.</exception>
         /// <exception cref="TimeoutException">The request timed out.</exception>
-        Stream GetMap(LHMServiceRequest content);
+        Stream GetMap(LHMServiceRequest request);
 
         /// <summary>
         /// Gets the response to the specified request.
         /// </summary>
-        /// <param name="content">The request content.</param>
+        /// <param name="request">The request.</param>
         /// <returns>A <see cref="LHMResponse"/> instance.</returns>
-        /// <exception cref="Exception">The request returned an error.</exception>
+        /// <exception cref="WvsException">The request returned an error.</exception>
         /// <exception cref="TimeoutException">The request timed out.</exception>
-        LHMResponse GetResponse(LHMServiceRequest content);
+        LHMResponse GetResponse(LHMServiceRequest request);
     }
 }
