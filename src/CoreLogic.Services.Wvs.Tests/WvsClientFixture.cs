@@ -11,8 +11,8 @@
 
         public WvsClientFixture()
         {
-            this.config.Setup(c => c.ApiKey).Returns("apiKey");
-            this.config.Setup(c => c.ClientId).Returns("clientId");
+            this.config.Setup(c => c.ApiKey).Returns("qSE7Ts-k67gNEJHwRM-V6yMcSTyJptFt6FMc22Cq");
+            this.config.Setup(c => c.ClientId).Returns("8857447859");
             this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/");
             this.config.Setup(c => c.Timeout).Returns(30);
         }
@@ -28,7 +28,8 @@
                 StartDate = new DateTime(2015, 03, 18)
             };
 
-            var request = LHMServiceRequest.GetAvailableMaps(dateRange, new string[] { "FDR", "TLX", "VNX", "ICT" });
+            var request = LHMServiceRequest.GetAvailableMaps(
+                WeatherMapType.Hail, dateRange, new string[] { "FDR", "TLX", "VNX", "ICT" });
 
             var result = sut.GetResponse(request).HailMaps;
 
@@ -39,18 +40,43 @@
             Assert.Equal("1", map.category);
             Assert.Equal(34.362, (double)map.centerLat);
             Assert.Equal(-98.976, (double)map.centerLon);
-            Assert.Equal("March 19th, 2015 - Wichita Falls, TX", map.displayName);
+            Assert.Equal("March 19th, 2015 - Wichita Falls - TX", map.displayName);
             Assert.Equal("2015-03-19T12:00:00", map.convectiveDate.ToString("s"));
-            Assert.Equal("2016-03-25T21:08:23", map.lastUpdated.ToString("s"));
+            Assert.Equal("2017-03-26T21:27:00", map.lastUpdated.ToString("s"));
             Assert.Equal("FDR", map.region);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
-        public void GetMapReturnsMap()
+        public void GetAvailableWindMapsReturnsWindMaps()
         {
             var sut = new WvsClient(this.config.Object);
 
-            var request = LHMServiceRequest.GetMap("FDR", DateTime.Parse("2015-03-25T12:00:00"), "KMZ");
+            var dateRange = new DateRange()
+            {
+                EndDate = new DateTime(2015, 03, 20),
+                StartDate = new DateTime(2015, 02, 18)
+            };
+
+            var request = LHMServiceRequest.GetAvailableMaps(
+                WeatherMapType.Wind, dateRange);
+
+            var result = sut.GetResponse(request).WindMaps;
+
+            Assert.True(result.Count() > 0);
+
+            var map = result.First();
+
+            Assert.Equal(45, map.maxSpeed.Value);
+            Assert.Equal("mph", map.maxSpeed.units);
+        }
+
+        [Fact(Skip = "External web service call, run manually.")]
+        public void GetHailMapReturnsHailMap()
+        {
+            var sut = new WvsClient(this.config.Object);
+
+            var request = LHMServiceRequest.GetMap(
+                WeatherMapType.Hail, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "GEOJSON");
 
             var result = sut.GetMap(request);
 
@@ -58,7 +84,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\storm.kmz", bytes);
-            Assert.Equal(38914, result.Length);
+            Assert.Equal(236298, result.Length);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
@@ -88,6 +114,23 @@
             Assert.Equal(
                 "POLYGON ((-164.73 62.19, -159.02 62.19, -159.02 59.4, -164.73 59.4, -164.73 62.19))",
                 region.GetPolygonWkt());
+        }
+
+        [Fact(Skip = "External web service call, run manually.")]
+        public void GetWindMapReturnsWindMap()
+        {
+            var sut = new WvsClient(this.config.Object);
+
+            var request = LHMServiceRequest.GetMap(
+                WeatherMapType.Wind, "FDR", DateTime.Parse("2015-03-25T12:00:00"), "GEOJSON");
+
+            var result = sut.GetMap(request);
+
+            // To save the contents to a file, uncomment the following lines:
+            // var bytes = new byte[result.Length];
+            // result.Read(bytes, 0, bytes.Length);
+            // File.WriteAllBytes(@"d:\data\wind-storm.json", bytes);
+            Assert.Equal(1602620, result.Length);
         }
     }
 }

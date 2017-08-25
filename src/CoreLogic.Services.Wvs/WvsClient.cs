@@ -4,6 +4,7 @@
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Net.Http.Formatting;
     using System.Net.Http.Headers;
@@ -33,9 +34,7 @@
             this.formatter = new XmlMediaTypeFormatter() { UseXmlSerializer = true };
             this.formatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
-            this.httpClient = HttpClientFactory.Create(new WvsErrorHandler());
-            this.httpClient.BaseAddress = new Uri(this.config.EndpointUrl);
-            this.httpClient.Timeout = TimeSpan.FromSeconds(this.config.Timeout);
+            this.httpClient = this.CreateHttpClient();
         }
 
         /// <summary>
@@ -145,6 +144,24 @@
 
                 this.disposed = true;
             }
+        }
+
+        private HttpClient CreateHttpClient()
+        {
+            var handler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+
+            var client = HttpClientFactory.Create(handler, new WvsErrorHandler());
+            client.BaseAddress = new Uri(this.config.EndpointUrl);
+            client.Timeout = TimeSpan.FromSeconds(this.config.Timeout);
+
+            client.DefaultRequestHeaders.AcceptEncoding.Clear();
+            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
+
+            return client;
         }
     }
 }

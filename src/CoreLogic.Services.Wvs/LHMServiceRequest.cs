@@ -13,214 +13,234 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps()
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType)
         {
-            return GetAvailableMaps(null, null, null, null, null);
+            return GetAvailableMaps(mapType, null, null, null, null, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="date">The date.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateTime date)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateTime date)
         {
-            return GetAvailableMaps(date, null, null, null, null);
+            return GetAvailableMaps(mapType, date, null, null, null, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="dateRange">The date range.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateRange dateRange)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateRange dateRange)
         {
-            return GetAvailableMaps(null, dateRange, null, null, null);
+            return GetAvailableMaps(mapType, null, dateRange, null, null, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="regions">The regions.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(IEnumerable<string> regions)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, IEnumerable<string> regions)
         {
-            return GetAvailableMaps(null, null, regions, null, null);
+            return GetAvailableMaps(mapType, null, null, regions, null, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="point">The point in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(GeoPoint point)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, GeoPoint point)
         {
-            return GetAvailableMaps(null, null, null, point, null);
+            return GetAvailableMaps(mapType, null, null, null, point, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="bounds">The bounds in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(GeoBounds bounds)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, GeoBounds bounds)
         {
-            return GetAvailableMaps(null, null, null, null, bounds);
+            return GetAvailableMaps(mapType, null, null, null, null, bounds);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="date">The date.</param>
         /// <param name="regions">The regions.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateTime date, IEnumerable<string> regions)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateTime date, IEnumerable<string> regions)
         {
-            return GetAvailableMaps(date, null, regions, null, null);
+            return GetAvailableMaps(mapType, date, null, regions, null, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="dateRange">The date range.</param>
         /// <param name="regions">The regions.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateRange dateRange, IEnumerable<string> regions)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateRange dateRange, IEnumerable<string> regions)
         {
-            return GetAvailableMaps(null, dateRange, regions, null, null);
+            return GetAvailableMaps(mapType, null, dateRange, regions, null, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="date">The date.</param>
         /// <param name="point">The point in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateTime date, GeoPoint point)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateTime date, GeoPoint point)
         {
-            return GetAvailableMaps(date, null, null, point, null);
+            return GetAvailableMaps(mapType, date, null, null, point, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="date">The date.</param>
         /// <param name="bounds">The bounds in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateTime date, GeoBounds bounds)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateTime date, GeoBounds bounds)
         {
-            return GetAvailableMaps(date, null, null, null, bounds);
+            return GetAvailableMaps(mapType, date, null, null, null, bounds);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="dateRange">The date range.</param>
         /// <param name="point">The point in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateRange dateRange, GeoPoint point)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateRange dateRange, GeoPoint point)
         {
-            return GetAvailableMaps(null, dateRange, null, point, null);
+            return GetAvailableMaps(mapType, null, dateRange, null, point, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="dateRange">The date range.</param>
         /// <param name="bounds">The bounds in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateRange dateRange, GeoBounds bounds)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateRange dateRange, GeoBounds bounds)
         {
-            return GetAvailableMaps(null, dateRange, null, null, bounds);
+            return GetAvailableMaps(mapType, null, dateRange, null, null, bounds);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="regions">The regions.</param>
         /// <param name="point">The point in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(IEnumerable<string> regions, GeoPoint point)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, IEnumerable<string> regions, GeoPoint point)
         {
-            return GetAvailableMaps(null, null, regions, point, null);
+            return GetAvailableMaps(mapType, null, null, regions, point, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="regions">The regions.</param>
         /// <param name="bounds">The bounds in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(IEnumerable<string> regions, GeoBounds bounds)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, IEnumerable<string> regions, GeoBounds bounds)
         {
-            return GetAvailableMaps(null, null, regions, null, bounds);
+            return GetAvailableMaps(mapType, null, null, regions, null, bounds);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="date">The date.</param>
         /// <param name="regions">The regions.</param>
         /// <param name="point">The point in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateTime date, IEnumerable<string> regions, GeoPoint point)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateTime date, IEnumerable<string> regions, GeoPoint point)
         {
-            return GetAvailableMaps(date, null, regions, point, null);
+            return GetAvailableMaps(mapType, date, null, regions, point, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="date">The date.</param>
         /// <param name="regions">The regions.</param>
         /// <param name="bounds">The bounds in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetAvailableMaps(DateTime date, IEnumerable<string> regions, GeoBounds bounds)
+        public static LHMServiceRequest GetAvailableMaps(WeatherMapType mapType, DateTime date, IEnumerable<string> regions, GeoBounds bounds)
         {
-            return GetAvailableMaps(date, null, regions, null, bounds);
+            return GetAvailableMaps(mapType, date, null, regions, null, bounds);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="dateRange">The date range.</param>
         /// <param name="regions">The regions.</param>
         /// <param name="point">The point in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
         public static LHMServiceRequest GetAvailableMaps(
-            DateRange dateRange, IEnumerable<string> regions, GeoPoint point)
+            WeatherMapType mapType, DateRange dateRange, IEnumerable<string> regions, GeoPoint point)
         {
-            return GetAvailableMaps(null, dateRange, regions, point, null);
+            return GetAvailableMaps(mapType, null, dateRange, regions, point, null);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve available maps.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="dateRange">The date range.</param>
         /// <param name="regions">The regions.</param>
         /// <param name="bounds">The bounds in latitude/longitude coordinates.</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
         public static LHMServiceRequest GetAvailableMaps(
-            DateRange dateRange, IEnumerable<string> regions, GeoBounds bounds)
+            WeatherMapType mapType, DateRange dateRange, IEnumerable<string> regions, GeoBounds bounds)
         {
-            return GetAvailableMaps(null, dateRange, regions, null, bounds);
+            return GetAvailableMaps(mapType, null, dateRange, regions, null, bounds);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LHMServiceRequest"/> class used to retrieve a map.
         /// </summary>
+        /// <param name="mapType">The type of weather map.</param>
         /// <param name="regionId">The region ID.</param>
         /// <param name="convectiveDate">The convective date.</param>
         /// <param name="returnType">The return type (i.e. GEOJSON, KMZ, PNG).</param>
         /// <returns>A <see cref="LHMServiceRequest"/> instance.</returns>
-        public static LHMServiceRequest GetMap(string regionId, DateTime convectiveDate, string returnType = "GEOJSON")
+        public static LHMServiceRequest GetMap(
+            WeatherMapType mapType, string regionId, DateTime convectiveDate, string returnType = "GEOJSON")
         {
             var result = new LHMServiceRequest
             {
                 convectiveDate = convectiveDate,
                 convectiveDateSpecified = true,
-                function = "GetMap",
+                function = LHMServiceRequest.GetMapFunctionFromMapType(mapType),
                 idRegion = regionId,
                 returnType = returnType
             };
@@ -300,6 +320,7 @@
         }
 
         private static LHMServiceRequest GetAvailableMaps(
+            WeatherMapType mapType,
             DateTime? date,
             DateRange dateRange,
             IEnumerable<string> regions,
@@ -309,7 +330,7 @@
             var result = new LHMServiceRequest
             {
                 DateRange = dateRange,
-                function = "GetAvailableMaps",
+                function = LHMServiceRequest.GetAvailableMapsFunctionFromMapType(mapType),
                 GeoBounds = bounds,
                 GeoPoint = point,
                 Regions = GetRegionString(regions)
@@ -322,6 +343,38 @@
             }
 
             return result;
+        }
+
+        private static string GetAvailableMapsFunctionFromMapType(WeatherMapType mapType)
+        {
+            switch (mapType)
+            {
+                case WeatherMapType.Hail:
+                    return "GetAvailableMaps";
+
+                case WeatherMapType.Wind:
+                    return "GetAvailableWindMaps";
+
+                default:
+                    throw new NotSupportedException(string.Format(
+                        "The specified map type {0} is not supported.", mapType.ToString()));
+            }
+        }
+
+        private static string GetMapFunctionFromMapType(WeatherMapType mapType)
+        {
+            switch (mapType)
+            {
+                case WeatherMapType.Hail:
+                    return "GetMap";
+
+                case WeatherMapType.Wind:
+                    return "GetWindMap";
+
+                default:
+                    throw new NotSupportedException(string.Format(
+                        "The specified map type {0} is not supported.", mapType.ToString()));
+            }
         }
 
         private static LHMServiceRequest GetRegions(

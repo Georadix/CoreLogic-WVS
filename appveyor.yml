@@ -38,6 +38,7 @@ assembly_info:
 configuration: Release
 
 build:
+  project: src\CoreLogic.Wvs.sln
   verbosity: minimal
 
 before_build:
@@ -49,6 +50,16 @@ after_build:
   - nuget pack "..\src\CoreLogic.Services.Wvs\CoreLogic.Services.Wvs.csproj" -Properties "Configuration=%CONFIGURATION%;Platform=AnyCPU" -IncludeReferencedProjects
   - ps: Get-ChildItem .\*.nupkg | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
   - cd ..
+
+after_test:
+  - ps: .\src\GenerateCodeCoverageReports.ps1
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  - path: CodeCoverage
 
 #---------------------------------#
 #     deployment configuration    #

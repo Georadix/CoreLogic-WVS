@@ -230,18 +230,52 @@ namespace CoreLogic.Services.Wvs {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class Velocity {
+        
+        private string unitsField;
+        
+        private int valueField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string units {
+            get {
+                return this.unitsField;
+            }
+            set {
+                this.unitsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlTextAttribute()]
+        public int Value {
+            get {
+                return this.valueField;
+            }
+            set {
+                this.valueField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
     public partial class HailMap {
         
         private string categoryField;
-
+        
         private string displayNameField;
         
         private System.DateTime lastUpdatedField;
-
+        
         private decimal centerLatField;
-
+        
         private decimal centerLonField;
         
         private string regionField;
@@ -258,9 +292,9 @@ namespace CoreLogic.Services.Wvs {
                 this.categoryField = value;
             }
         }
-
+        
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public string displayName {
             get {
                 return this.displayNameField;
@@ -280,9 +314,9 @@ namespace CoreLogic.Services.Wvs {
                 this.lastUpdatedField = value;
             }
         }
-
+        
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public decimal centerLat {
             get {
                 return this.centerLatField;
@@ -291,15 +325,116 @@ namespace CoreLogic.Services.Wvs {
                 this.centerLatField = value;
             }
         }
-
+        
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form = System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
         public decimal centerLon {
             get {
                 return this.centerLonField;
             }
             set {
                 this.centerLonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string region {
+            get {
+                return this.regionField;
+            }
+            set {
+                this.regionField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public System.DateTime convectiveDate {
+            get {
+                return this.convectiveDateField;
+            }
+            set {
+                this.convectiveDateField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class WindMap {
+        
+        private string displayNameField;
+        
+        private System.DateTime lastUpdatedField;
+        
+        private decimal centerLatField;
+        
+        private decimal centerLonField;
+        
+        private Velocity maxSpeedField;
+        
+        private string regionField;
+        
+        private System.DateTime convectiveDateField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public string displayName {
+            get {
+                return this.displayNameField;
+            }
+            set {
+                this.displayNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public System.DateTime lastUpdated {
+            get {
+                return this.lastUpdatedField;
+            }
+            set {
+                this.lastUpdatedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public decimal centerLat {
+            get {
+                return this.centerLatField;
+            }
+            set {
+                this.centerLatField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public decimal centerLon {
+            get {
+                return this.centerLonField;
+            }
+            set {
+                this.centerLonField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        public Velocity maxSpeed {
+            get {
+                return this.maxSpeedField;
+            }
+            set {
+                this.maxSpeedField = value;
             }
         }
         
@@ -699,6 +834,8 @@ namespace CoreLogic.Services.Wvs {
         
         private HailMap[] hailMapsField;
         
+        private WindMap[] windMapsField;
+        
         private Region[] regionsField;
         
         /// <remarks/>
@@ -731,6 +868,18 @@ namespace CoreLogic.Services.Wvs {
             }
             set {
                 this.hailMapsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified)]
+        [System.Xml.Serialization.XmlArrayItemAttribute("WindMap", IsNullable=false)]
+        public WindMap[] WindMaps {
+            get {
+                return this.windMapsField;
+            }
+            set {
+                this.windMapsField = value;
             }
         }
         
