@@ -13,8 +13,8 @@
         {
             this.config.Setup(c => c.ApiKey).Returns("apiKey");
             this.config.Setup(c => c.ClientId).Returns("clientId");
-            this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/services/endpoint.php");
-            this.config.Setup(c => c.Timeout).Returns(100);
+            this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/");
+            this.config.Setup(c => c.Timeout).Returns(30);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
@@ -58,7 +58,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\storm.kmz", bytes);
-            Assert.Equal(56066, result.Length);
+            Assert.Equal(38914, result.Length);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
