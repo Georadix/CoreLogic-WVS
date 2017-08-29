@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using System.Net;
     using System.Net.Http;
     using System.Runtime.Serialization;
     using System.Text;
@@ -102,6 +103,14 @@
         }
 
         /// <summary>
+        /// Gets the status code of the HTTP response.
+        /// </summary>
+        public HttpStatusCode? StatusCode
+        {
+            get { return (this.response != null) ? this.response.StatusCode : (HttpStatusCode?)null; }
+        }
+
+        /// <summary>
         /// When overridden in a derived class, sets the <see cref="SerializationInfo"/> with information about the
         /// exception.
         /// </summary>
@@ -132,17 +141,17 @@
 
             this.AppendContent(
                 builder,
-                "Request:",
-                (this.response != null) ? this.response.RequestMessage : null,
-                this.requestContent,
-                (this.response != null) ? this.response.RequestMessage.Content : null);
-
-            this.AppendContent(
-                builder,
                 "Response:",
                 this.response,
                 this.responseContent,
                 (this.response != null) ? this.response.Content : null);
+
+            this.AppendContent(
+                builder,
+                "Request:",
+                (this.response != null) ? this.response.RequestMessage : null,
+                this.requestContent,
+                (this.response != null) ? this.response.RequestMessage.Content : null);
 
             return builder.ToString();
         }
