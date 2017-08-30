@@ -3,6 +3,7 @@
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Formatting;
@@ -12,10 +13,12 @@
     /// Represents a client used to communicate with CoreLogic Weather Verification Services (WVS).
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class WvsClient : IWvsClient
+    public class WvsClient : IWvsClient, IDisposable
     {
         private readonly IWvsConfig config;
-        private readonly XmlMediaTypeFormatter xmlFormatter;
+        private readonly XmlMediaTypeFormatter formatter;
+        private readonly HttpClient httpClient;
+        private bool disposed = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WvsClient"/> class.
@@ -28,100 +31,118 @@
 
             this.config = config;
 
-            this.xmlFormatter = new XmlMediaTypeFormatter() { UseXmlSerializer = true };
-            this.xmlFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+            this.formatter = new XmlMediaTypeFormatter() { UseXmlSerializer = true };
+            this.formatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+
+            this.httpClient = this.CreateHttpClient();
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="WvsClient"/> class.
+        /// </summary>
+        ~WvsClient()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
         /// Gets a map from the specified request.
         /// </summary>
-        /// <param name="content">The request content.</param>
+        /// <param name="request">The request.</param>
         /// <returns>A <see cref="Stream"/> instance.</returns>
-        /// <exception cref="Exception">The request returned an error.</exception>
+        /// <exception cref="WvsException">The request returned an error.</exception>
         /// <exception cref="TimeoutException">The request timed out.</exception>
-        public Stream GetMap(LHMServiceRequest content)
+        public Stream GetMap(LHMServiceRequest request)
         {
-            content.SetRequestToken(this.config.ClientId, this.config.ApiKey);
+            request.SetRequestToken(this.config.ClientId, this.config.ApiKey);
 
-            using (var client = this.CreateHttpClient())
+            var response = this.httpClient.PostAsync(string.Empty, request, this.formatter);
+            response.Wait();
+
+            var contentType = response.Result.Content.Headers.ContentType;
+
+            if (this.formatter.SupportedMediaTypes.Any(mt =>
+                    mt.MediaType.Equals(contentType.MediaType, StringComparison.InvariantCultureIgnoreCase)))
             {
-                var request = client.PostAsync(this.config.EndpointUrl, content, this.xmlFormatter);
-                request.Wait();
+                var content = response.Result.Content.ReadAsAsync<LHMResponse>(
+                    new MediaTypeFormatter[] { this.formatter });
+                content.Wait();
 
-                if (request.Result.IsSuccessStatusCode)
-                {
-                    var deserialize = request.Result.Content.ReadAsStreamAsync();
-                    deserialize.Wait();
+                var result = content.Result;
 
-                    return deserialize.Result;
-                }
-                else
-                {
-                    var deserialize = request.Result.Content.ReadAsStringAsync();
-                    deserialize.Wait();
+                throw new WvsException(
+                    string.Format("{0} ({1})", result.StatusCode.message, result.StatusCode.Value),
+                    response.Result,
+                    request,
+                    result);
+            }
+            else
+            {
+                var content = response.Result.Content.ReadAsStreamAsync();
+                content.Wait();
 
-                    var ex = new Exception("A request to WVS failed.");
-
-                    ex.Data.Add("Url", this.config.EndpointUrl);
-                    ex.Data.Add("Content", content);
-                    ex.Data.Add("StatusCode", request.Result.StatusCode);
-                    ex.Data.Add("Response", deserialize.Result);
-
-                    throw ex;
-                }
+                return content.Result;
             }
         }
 
         /// <summary>
         /// Gets the response to the specified request.
         /// </summary>
-        /// <param name="content">The request content.</param>
+        /// <param name="request">The request.</param>
         /// <returns>A <see cref="LHMResponse"/> instance.</returns>
-        /// <exception cref="Exception">The request returned an error.</exception>
+        /// <exception cref="WvsException">The request returned an error.</exception>
         /// <exception cref="TimeoutException">The request timed out.</exception>
-        public LHMResponse GetResponse(LHMServiceRequest content)
+        public LHMResponse GetResponse(LHMServiceRequest request)
         {
-            content.SetRequestToken(this.config.ClientId, this.config.ApiKey);
+            request.SetRequestToken(this.config.ClientId, this.config.ApiKey);
 
-            using (var client = this.CreateHttpClient())
+            var response = this.httpClient.PostAsync(string.Empty, request, this.formatter);
+            response.Wait();
+
+            var content = response.Result.Content.ReadAsAsync<LHMResponse>(
+                new MediaTypeFormatter[] { this.formatter });
+            content.Wait();
+
+            var result = content.Result;
+
+            if ((result == null) || (result.StatusCode.Value != "1"))
             {
-                var request = client.PostAsync(this.config.EndpointUrl, content, this.xmlFormatter);
-                request.Wait();
+                throw new WvsException(
+                    string.Format("{0} ({1})", result.StatusCode.message, result.StatusCode.Value),
+                    response.Result,
+                    request,
+                    result);
+            }
 
-                if (request.Result.IsSuccessStatusCode)
+            return result;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
                 {
-                    var deserialize = request.Result.Content.ReadAsAsync(
-                        typeof(LHMResponse), new MediaTypeFormatter[] { this.xmlFormatter });
-                    deserialize.Wait();
-
-                    var result = (LHMResponse)deserialize.Result;
-
-                    if (result.StatusCode.Value != "1")
-                    {
-                        var ex = new Exception(
-                            string.Format("{0}: {1}", result.StatusCode.Value, result.StatusCode.message));
-
-                        ex.Data.Add("Url", this.config.EndpointUrl);
-
-                        throw ex;
-                    }
-
-                    return result;
+                    this.httpClient.Dispose();
                 }
-                else
-                {
-                    var deserialize = request.Result.Content.ReadAsStringAsync();
-                    deserialize.Wait();
 
-                    var ex = new Exception("A request to WVS failed.");
-
-                    ex.Data.Add("Url", this.config.EndpointUrl);
-                    ex.Data.Add("Content", content);
-                    ex.Data.Add("StatusCode", request.Result.StatusCode);
-                    ex.Data.Add("Response", deserialize.Result);
-
-                    throw ex;
-                }
+                this.disposed = true;
             }
         }
 
@@ -132,7 +153,9 @@
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             };
 
-            var client = new HttpClient(handler) { Timeout = TimeSpan.FromSeconds(this.config.Timeout) };
+            var client = HttpClientFactory.Create(handler, new WvsErrorHandler());
+            client.BaseAddress = new Uri(this.config.EndpointUrl);
+            client.Timeout = TimeSpan.FromSeconds(this.config.Timeout);
 
             client.DefaultRequestHeaders.AcceptEncoding.Clear();
             client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));

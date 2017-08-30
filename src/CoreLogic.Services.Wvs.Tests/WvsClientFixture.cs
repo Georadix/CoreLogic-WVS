@@ -13,15 +13,8 @@
         {
             this.config.Setup(c => c.ApiKey).Returns("apiKey");
             this.config.Setup(c => c.ClientId).Returns("clientId");
-
-            // this.config
-            //    .Setup(c => c.EndpointUrl)
-            //    .Returns("https://services.wvs.corelogic.com/services/endpoint.php");
-            this.config
-                .Setup(c => c.EndpointUrl)
-                .Returns("https://services-test.wvs.corelogic.com/services/endpoint.php");
-
-            this.config.Setup(c => c.Timeout).Returns(100);
+            this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/");
+            this.config.Setup(c => c.Timeout).Returns(30);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
@@ -49,7 +42,7 @@
             Assert.Equal(-98.976, (double)map.centerLon);
             Assert.Equal("March 19th, 2015 - Wichita Falls - TX", map.displayName);
             Assert.Equal("2015-03-19T12:00:00", map.convectiveDate.ToString("s"));
-            Assert.Equal("2016-03-25T21:08:23", map.lastUpdated.ToString("s"));
+            Assert.Equal("2017-03-26T21:27:00", map.lastUpdated.ToString("s"));
             Assert.Equal("FDR", map.region);
         }
 
@@ -73,7 +66,7 @@
 
             var map = result.First();
 
-            Assert.Equal(50, map.maxSpeed.Value);
+            Assert.Equal(45, map.maxSpeed.Value);
             Assert.Equal("mph", map.maxSpeed.units);
         }
 
@@ -91,7 +84,7 @@
             // var bytes = new byte[result.Length];
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\storm.kmz", bytes);
-            Assert.Equal(338964, result.Length);
+            Assert.Equal(236298, result.Length);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
