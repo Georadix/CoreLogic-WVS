@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreLogic.Services.Wvs", "CoreLogic.Services.Wvs\CoreLogic.Services.Wvs.csproj", "{A88447B9-54FC-49BD-ABAB-2EE3E768122F}"
 EndProject
@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		GenerateCodeCoverageReports.ps1 = GenerateCodeCoverageReports.ps1
 		..\README.md = ..\README.md
 		Settings.StyleCop = Settings.StyleCop
+		..\tools\TransformXml.proj = ..\tools\TransformXml.proj
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{EECC3BEC-E094-46D4-9802-B75299D3747E}"
@@ -44,5 +45,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{268A29B9-72A4-46C6-9D16-BEF8B280692A} = {8D72CDEE-424C-48B8-88A3-B65DFAC5FD9B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBF5DDE0-EE3D-4BAF-804A-5D08610DE989}
 	EndGlobalSection
 EndGlobal
