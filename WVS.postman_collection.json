@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "b30caa18-655e-4d92-ae59-f0aa001a8f19",
+		"name": "WVS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetMap",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"GetMap\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<convectiveDate>2015-08-02T12:00:00</convectiveDate>\n<idRegion>LOT</idRegion>\n<returnType>GEOJSON</returnType>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRegions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"GetRegions\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<GeoBounds>\n<WestLon>-180.0000</WestLon>\n<EastLon>180.0000</EastLon>\n<SouthLat>-90.0000</SouthLat>\n<NorthLat>90.0000</NorthLat>\n</GeoBounds>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetWindMap",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"GetWindMap\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<convectiveDate>2017-04-02T12:00:00</convectiveDate>\n<idRegion>US</idRegion>\n<returnType>GEOJSON</returnType>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HailHistoryAtLocation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"HailHistoryAtLocation\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<GeoPoint>\n<lat>34.739238</lat>\n<lon>-92.252457</lon>\n</GeoPoint>\n<HistoryLength>48</HistoryLength>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "WindHistoryAtLocation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"WindHistoryAtLocation\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<GeoPoint>\n<lat>34.739238</lat>\n<lon>-92.252457</lon>\n</GeoPoint>\n<HistoryLength>48</HistoryLength>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAvailableMaps",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"GetAvailableMaps\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<DateRange>\n<StartDate>2016-03-08T00:00:00Z</StartDate>\n<EndDate>2016-04-07T00:00:00Z</EndDate>\n</DateRange>\n<Regions>AMA,BRO,CRP,DDC,DFX,DYX,EPZ,EWX,FDR,FWS,GLD,GRK,HGX,ICT,INX,LBB,LCH,LIX,LZK,MAF,POE,SHV,SJT,SRX,TLX,TWX,VNX</Regions>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAvailableWindMaps",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<LHMServiceRequest function=\"GetAvailableWindMaps\">\n<RequestToken>\n<idUser>{{wvs_id_user}}</idUser>\n<key>{{wvs_key}}</key>\n</RequestToken>\n<DateRange>\n<StartDate>2016-03-08T00:00:00Z</StartDate>\n<EndDate>2016-04-07T00:00:00Z</EndDate>\n</DateRange>\n<Regions>AMA,BRO,CRP,DDC,DFX,DYX,EPZ,EWX,FDR,FWS,GLD,GRK,HGX,ICT,INX,LBB,LCH,LIX,LZK,MAF,POE,SHV,SJT,SRX,TLX,TWX,VNX</Regions>\n</LHMServiceRequest>"
+				},
+				"url": {
+					"raw": "{{wvs_origin}}",
+					"host": [
+						"{{wvs_origin}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
