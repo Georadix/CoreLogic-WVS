@@ -1,20 +1,51 @@
-﻿namespace CoreLogic.Services.Wvs
+namespace CoreLogic.Services.Wvs
 {
+    using Georadix.Core;
+    using Georadix.WebApi.Testing;
     using Moq;
     using System;
+    using System.IO;
     using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Xml.Serialization;
     using Xunit;
 
-    public class WvsClientFixture
+    public class WvsClientFixture : IDisposable
     {
         private readonly Mock<IWvsConfig> config = new Mock<IWvsConfig>(MockBehavior.Strict);
+        private readonly FakeResponseHandler fakeResponseHandler;
+        private readonly WvsClient sut;
+        private bool disposed = false;
 
         public WvsClientFixture()
         {
             this.config.Setup(c => c.ApiKey).Returns("apiKey");
             this.config.Setup(c => c.ClientId).Returns("clientId");
             this.config.Setup(c => c.EndpointUrl).Returns("https://services.wvs.corelogic.com/");
-            this.config.Setup(c => c.Timeout).Returns(30);
+            this.config.Setup(c => c.Timeout).Returns(10);
+
+            this.fakeResponseHandler = new FakeResponseHandler();
+
+            this.sut = new WvsClient(this.config.Object, this.fakeResponseHandler);
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="WvsClientFixture"/> class.
+        /// </summary>
+        ~WvsClientFixture()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         [Fact(Skip = "External web service call, run manually.")]
@@ -116,6 +147,97 @@
                 region.GetPolygonWkt());
         }
 
+        [Fact]
+        public void GetResponseReturnsExpectedResult()
+        {
+            var dateRange = new DateRange()
+            {
+                EndDate = new DateTime(2015, 03, 20),
+                StartDate = new DateTime(2015, 03, 18)
+            };
+
+            var request = LHMServiceRequest.GetAvailableMaps(
+                WeatherMapType.Hail, dateRange, new string[] { "FDR", "TLX", "VNX", "ICT" });
+
+            var expectedResponse = new LHMResponse()
+            {
+                HailMaps = new HailMap[]
+                {
+                    new HailMap()
+                    {
+                        category = "2",
+                        centerLat = 45.5M,
+                        centerLon = -75.7M,
+                        convectiveDate = DateTime.Parse("2015-03-19T12:00:00"),
+                        displayName = "A storm",
+                        lastUpdated = DateTime.Parse("2017-03-26T21:27:00"),
+                        region = "REG"
+                    }
+                },
+                StatusCode = new StatusCode() { Value = "1" }
+            };
+
+            this.fakeResponseHandler.AddFakePostResponse(
+                new Uri(string.Format(
+                    "{0}",
+                    this.config.Object.EndpointUrl)),
+                (requestContent) =>
+                {
+                    var expectedRequest = request;
+                    var actualRequest = DeserializeObject<LHMServiceRequest>(requestContent);
+
+                    Assert.True(
+                        new GenericEqualityComparer<LHMServiceRequest>().Equals(
+                            expectedRequest,
+                            actualRequest));
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(
+                            SerializeObject(expectedResponse), Encoding.Unicode, "application/xml")
+                    };
+                });
+
+            var actualResponse = this.sut.GetResponse(request);
+
+            Assert.True(
+                new GenericEqualityComparer<LHMResponse>().Equals(expectedResponse, actualResponse));
+        }
+
+        [Fact]
+        public void GetResponseWithInvalidStatusCodeThrowsWvsException()
+        {
+            var request = LHMServiceRequest.GetRegions();
+
+            var response = new LHMResponse()
+            {
+                StatusCode = new StatusCode() { Value = "0" }
+            };
+
+            this.fakeResponseHandler.AddFakePostResponse(
+                new Uri(string.Format(
+                    "{0}",
+                    this.config.Object.EndpointUrl)),
+                (requestContent) =>
+                {
+                    var expectedRequest = request;
+                    var actualRequest = DeserializeObject<LHMServiceRequest>(requestContent);
+
+                    Assert.True(
+                        new GenericEqualityComparer<LHMServiceRequest>().Equals(
+                            expectedRequest,
+                            actualRequest));
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(
+                            SerializeObject(response), Encoding.Unicode, "application/xml")
+                    };
+                });
+
+            Assert.Throws<WvsException>(() => this.sut.GetResponse(request));
+        }
+
         [Fact(Skip = "External web service call, run manually.")]
         public void GetWindMapReturnsWindMap()
         {
@@ -131,6 +253,48 @@
             // result.Read(bytes, 0, bytes.Length);
             // File.WriteAllBytes(@"d:\data\wind-storm.json", bytes);
             Assert.Equal(1602620, result.Length);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// <c>true</c> to release both managed and unmanaged resources;
+        /// <c>false</c> to release only unmanaged resources.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.sut.Dispose();
+                    this.fakeResponseHandler.Dispose();
+                }
+
+                this.disposed = true;
+            }
+        }
+
+        private T DeserializeObject<T>(string value)
+        {
+            var xmlSerializer = new XmlSerializer(typeof(T));
+
+            using (var textReader = new StringReader(value))
+            {
+                return (T)xmlSerializer.Deserialize(textReader);
+            }
+        }
+
+        private string SerializeObject<T>(T value)
+        {
+            var xmlSerializer = new XmlSerializer(value.GetType());
+
+            using (var textWriter = new StringWriter())
+            {
+                xmlSerializer.Serialize(textWriter, value);
+                return textWriter.ToString();
+            }
         }
     }
 }

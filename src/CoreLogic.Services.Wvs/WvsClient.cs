@@ -1,6 +1,7 @@
-﻿namespace CoreLogic.Services.Wvs
+namespace CoreLogic.Services.Wvs
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
@@ -24,8 +25,11 @@
         /// Initializes a new instance of the <see cref="WvsClient"/> class.
         /// </summary>
         /// <param name="config">The configuration.</param>
+        /// <param name="handlers">
+        /// The list of HTTP handler that delegates the processing of HTTP response messages to another handler.
+        /// </param>
         /// <exception cref="ArgumentNullException"><paramref name="config" /> is <see langword="null" />.</exception>
-        public WvsClient(IWvsConfig config)
+        public WvsClient(IWvsConfig config, params DelegatingHandler[] handlers)
         {
             config.AssertNotNull("config");
 
@@ -34,7 +38,21 @@
             this.formatter = new XmlMediaTypeFormatter() { UseXmlSerializer = true };
             this.formatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
 
-            this.httpClient = this.CreateHttpClient();
+            var innerHandler = new HttpClientHandler
+            {
+                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+            };
+
+            var allHandlers = new List<DelegatingHandler>(handlers);
+            allHandlers.Insert(0, new WvsErrorHandler());
+
+            this.httpClient = HttpClientFactory.Create(innerHandler, allHandlers.ToArray());
+            this.httpClient.BaseAddress = new Uri(this.config.EndpointUrl);
+            this.httpClient.Timeout = TimeSpan.FromSeconds(this.config.Timeout);
+
+            this.httpClient.DefaultRequestHeaders.AcceptEncoding.Clear();
+            this.httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
+            this.httpClient.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
         }
 
         /// <summary>
@@ -144,24 +162,6 @@
 
                 this.disposed = true;
             }
-        }
-
-        private HttpClient CreateHttpClient()
-        {
-            var handler = new HttpClientHandler
-            {
-                AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
-            };
-
-            var client = HttpClientFactory.Create(handler, new WvsErrorHandler());
-            client.BaseAddress = new Uri(this.config.EndpointUrl);
-            client.Timeout = TimeSpan.FromSeconds(this.config.Timeout);
-
-            client.DefaultRequestHeaders.AcceptEncoding.Clear();
-            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("gzip"));
-            client.DefaultRequestHeaders.AcceptEncoding.Add(new StringWithQualityHeaderValue("deflate"));
-
-            return client;
         }
     }
 }
